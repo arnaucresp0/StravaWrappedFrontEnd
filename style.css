@@ -1,9 +1,115 @@
+/* Reset bàsic */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Cos de la pàgina */
 body {
-  font-family: sans-serif;
+  font-family: 'Montserrat', Arial, sans-serif;
+  min-height: 100vh;
+  background-image: url("assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #fc4c02;
+}
+
+
+/* Overlay fosc per llegibilitat */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: -1;
+}
+
+/* Contenidor principal */
+h1 {
+  font-size: 4.5rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+  margin-top: -100px; /* puja el títol */
   text-align: center;
 }
 
-img {
-  width: 300px;
-  margin: 10px;
+
+#mainBtn {
+  background-color: #fc4c02; /* Strava orange */
+  color: #000;
+  border: none;
+  border-radius: 50px;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 18px 42px;
+
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+
+  transition: all 0.25s ease;
 }
+
+#mainBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+  background-color: #ff5a12;
+}
+
+#mainBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Zona auth / wrapped */
+#auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+footer .socials {
+  margin-top: 8px;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: 600;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2.5rem;
+    margin-top: -40px;
+  }
+
+  #loginBtn {
+    font-size: 1.2rem;
+    padding: 16px 32px;
+  }
+}
+
+
