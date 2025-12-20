@@ -1,7 +1,15 @@
 const API = "http://localhost:8000";
 
 const mainBtn = document.getElementById("mainBtn");
-const imagesDiv = document.getElementById("images");
+const wrappedDiv = document.getElementById("wrapped");
+let images = [];
+let currentIndex = 0;
+
+const carouselImage = document.getElementById("carouselImage");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+
 
 mainBtn.onclick = async () => {
   // 1️⃣ Comprovar sessió
@@ -21,6 +29,24 @@ mainBtn.onclick = async () => {
   generateWrapped();
 };
 
+prevBtn.onclick = () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  showImage(currentIndex);
+};
+
+nextBtn.onclick = () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  showImage(currentIndex);
+};
+
+downloadBtn.onclick = () => {
+  const name = images[currentIndex];
+  const link = document.createElement("a");
+  link.href = `${API}/wrapped/image/${name}`;
+  link.download = name;
+  link.click();
+};
+
 async function generateWrapped() {
   mainBtn.disabled = true;
   mainBtn.innerText = "Generant el teu Wrapped...";
@@ -31,18 +57,22 @@ async function generateWrapped() {
 
   const data = await res.json();
 
-  imagesDiv.innerHTML = "";
+  // Guardem noms d'imatge
+  images = data.images.map(path => path.split("\\").pop());
+  currentIndex = 0;
 
-  data.images.forEach(path => {
-    const name = path.split("\\").pop();
+  // Mostrem secció wrapped
+  wrappedDiv.style.display = "block";
 
-    const img = document.createElement("img");
-    img.src = `${API}/wrapped/image/${name}`;
-    img.style.maxWidth = "100%";
-    img.style.marginBottom = "20px";
+  // Mostrem primera imatge
+  showImage(currentIndex);
 
-    imagesDiv.appendChild(img);
-  });
-
+  // Amaguem botó principal
   mainBtn.style.display = "none";
 }
+
+function showImage(index) {
+  const name = images[index];
+  carouselImage.src = `${API}/wrapped/image/${name}`;
+}
+

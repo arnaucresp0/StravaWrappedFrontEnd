@@ -23,7 +23,23 @@
 
   <button id="mainBtn">Genera el meu Strava Wrapped</button>
 
-  <div id="images"></div>
+  <div id="wrapped" style="display:none;">
+    <div class="carousel">
+
+      <button class="nav-btn" id="prevBtn">❮</button>
+
+      <div class="image-container">
+        <img id="carouselImage" src="" alt="Wrapped image">
+      </div>
+
+      <button class="nav-btn" id="nextBtn">❯</button>
+
+    </div>
+
+    <div class="download-container">
+      <button id="downloadBtn">Descarregar imatge</button>
+    </div>
+</div>
 
   <script src="app.js"></script>
 </body>
