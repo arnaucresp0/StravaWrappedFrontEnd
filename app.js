@@ -76,3 +76,22 @@ function showImage(index) {
   carouselImage.src = `${API}/wrapped/image/${name}`;
 }
 
+const infoBtn = document.getElementById("infoBtn");
+const infoModal = document.getElementById("infoModal");
+const closeModalBtn = document.getElementById("closeModalBtn");
+
+infoBtn.onclick = () => {
+  infoModal.style.display = "flex";
+};
+
+closeModalBtn.onclick = () => {
+  infoModal.style.display = "none";
+};
+
+// Tancar clicant fora
+infoModal.onclick = (e) => {
+  if (e.target === infoModal) {
+    infoModal.style.display = "none";
+  }
+};
+

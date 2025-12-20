@@ -41,6 +41,90 @@ h1 {
   text-align: center;
 }
 
+/* Info button */
+.info-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+  border: 2px solid white;
+
+  background: transparent;
+  color: white;
+
+  font-family: "Courier New", Courier, monospace;
+  font-size: 20px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.info-btn:hover {
+  background: white;
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.info-btn:active {
+  transform: scale(0.95);
+}
+
+
+/* Modal overlay */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  margin-bottom: 10px;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  background: #fc4c02;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
 
 #mainBtn {
   background-color: #fc4c02; /* Strava orange */
@@ -171,6 +255,14 @@ footer a:hover {
 
   .nav-btn {
     font-size: 2.2rem;
+  }
+
+  .info-btn {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
   }
 }
 
