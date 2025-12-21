@@ -57,14 +57,19 @@ async function generateWrapped() {
 
   const data = await res.json();
 
-  // Guardem noms d'imatge
-  images = data.images.map(path => path.split("\\").pop());
+  // CORRECCIÓ CLAU: Extreure només el nom del fitxer
+  images = data.images.map(path => {
+    // Divideix la ruta per '/' o '\' i agafa l'últim element
+    const parts = path.split(/[\\/]/);
+    return parts.pop(); // Retorna "year_overall_cat.png"
+  });
+  
   currentIndex = 0;
 
   // Mostrem secció wrapped
   wrappedDiv.style.display = "block";
 
-  // Mostrem primera imatge
+  // Mostrem primera imatge (ara amb la ruta correcta)
   showImage(currentIndex);
 
   // Amaguem botó principal
