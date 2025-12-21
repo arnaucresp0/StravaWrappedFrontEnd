@@ -39,14 +39,6 @@ nextBtn.onclick = () => {
   showImage(currentIndex);
 };
 
-downloadBtn.onclick = () => {
-  const name = images[currentIndex];
-  const link = document.createElement("a");
-  link.href = `${API}/wrapped/image/${name}`;
-  link.download = name;
-  link.click();
-};
-
 async function generateWrapped() {
   mainBtn.disabled = true;
   mainBtn.innerText = "Generant el teu Wrapped...";
@@ -57,8 +49,14 @@ async function generateWrapped() {
 
   const data = await res.json();
 
-  // Ara data.images és una llista de cadenes Base64
-  images = data.images;  // Directament les cadenes Base64
+  // Guardem tant les imatges com els noms
+  images = data.images;
+  imageNames = data.image_names || [  // Si el backend retorna noms
+    "resum_any.png", "km_totals.png", "temps_total.png", 
+    "desnivell.png", "esport_dominant.png", "millor_activitat.png",
+    "dades_socials.png", "energia.png", "esports_practicats.png"
+  ];
+  
   currentIndex = 0;
 
   wrappedDiv.style.display = "block";
@@ -66,10 +64,23 @@ async function generateWrapped() {
   mainBtn.style.display = "none";
 }
 
+// Descarrega amb nom descriptiu
+downloadBtn.onclick = () => {
+  const base64Image = images[currentIndex];
+  const link = document.createElement("a");
+  
+  // Usar nom descriptiu o genèric
+  const name = imageNames[currentIndex] || `strava_wrapped_${currentIndex + 1}.jpg`;
+  link.download = name;
+  link.href = `data:image/jpeg;base64,${base64Image}`;
+  
+  link.click();
+};
+
 function showImage(index) {
   const base64Image = images[index];
-  // Mostra la imatge directament des de Base64
-  carouselImage.src = `data:image/png;base64,${base64Image}`;
+  // Canvia 'png' per 'jpeg' (o deixa-ho dinàmic)
+  carouselImage.src = `data:image/jpeg;base64,${base64Image}`;
 }
 
 const infoBtn = document.getElementById("infoBtn");
