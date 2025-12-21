@@ -57,28 +57,19 @@ async function generateWrapped() {
 
   const data = await res.json();
 
-  // CORRECCIÓ CLAU: Extreure només el nom del fitxer
-  images = data.images.map(path => {
-    // Divideix la ruta per '/' o '\' i agafa l'últim element
-    const parts = path.split(/[\\/]/);
-    return parts.pop(); // Retorna "year_overall_cat.png"
-  });
-  
+  // Ara data.images és una llista de cadenes Base64
+  images = data.images;  // Directament les cadenes Base64
   currentIndex = 0;
 
-  // Mostrem secció wrapped
   wrappedDiv.style.display = "block";
-
-  // Mostrem primera imatge (ara amb la ruta correcta)
   showImage(currentIndex);
-
-  // Amaguem botó principal
   mainBtn.style.display = "none";
 }
 
 function showImage(index) {
-  const name = images[index];
-  carouselImage.src = `${API}/wrapped/image/${name}`;
+  const base64Image = images[index];
+  // Mostra la imatge directament des de Base64
+  carouselImage.src = `data:image/png;base64,${base64Image}`;
 }
 
 const infoBtn = document.getElementById("infoBtn");
