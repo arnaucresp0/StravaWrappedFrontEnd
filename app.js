@@ -1,5 +1,17 @@
 const API = "https://strava-wrapped-backend.onrender.com";
 
+// Llegeix token de la URL si existeix
+const urlParams = new URLSearchParams(window.location.search);
+const urlToken = urlParams.get('token');
+
+if (urlToken) {
+  console.log("🔑 Token rebut de la URL");
+  localStorage.setItem('strava_session_token', urlToken);
+  
+  // Neteja la URL per seguretat (elimina el paràmetre token)
+  window.history.replaceState({}, '', window.location.pathname);
+}
+
 const mainBtn = document.getElementById("mainBtn");
 const wrappedDiv = document.getElementById("wrapped");
 let images = [];
@@ -12,12 +24,24 @@ const downloadBtn = document.getElementById("downloadBtn");
 
 
 mainBtn.onclick = async () => {
-  // 1️⃣ Comprovar sessió
-  const res = await fetch(`${API}/me`, {
-    credentials: "include"
-  });
-
-  const data = await res.json();
+  // Prova múltiples mètodes d'autenticació
+  const token = localStorage.getItem('strava_session_token');
+  
+  let authRes;
+  if (token) {
+    // Mètode 1: Token via header (funciona a Safari mòbil)
+    authRes = await fetch(`${API}/me_token`, {
+      headers: { "x-session-token": token }
+    });
+  } else {
+    // Mètode 2: Cookies (per a navegadors que les suportin)
+    authRes = await fetch(`${API}/me_token`, {
+      credentials: "include"
+    });
+  }
+  
+  const data = await authRes.json();
+  console.log("🔍 Autenticació:", data);
 
   // 2️⃣ Si no està autenticat → OAuth
   if (!data.authenticated) {
@@ -42,9 +66,17 @@ nextBtn.onclick = () => {
 async function generateWrapped() {
   mainBtn.disabled = true;
   mainBtn.innerText = "Generant el teu Wrapped...";
-
+  
+  const token = localStorage.getItem('strava_session_token');
+  const headers = {};
+  
+  if (token) {
+    headers["x-session-token"] = token;
+  }
+  
   const res = await fetch(`${API}/wrapped/image`, {
-    credentials: "include"
+    credentials: "include",  // Encara intentem cookies si funciona
+    headers: headers
   });
 
   const data = await res.json();
@@ -52,9 +84,9 @@ async function generateWrapped() {
   // Guardem tant les imatges com els noms
   images = data.images;
   imageNames = data.image_names || [  // Si el backend retorna noms
-    "resum_any.png", "km_totals.png", "temps_total.png", 
-    "desnivell.png", "esport_dominant.png", "millor_activitat.png",
-    "dades_socials.png", "energia.png", "esports_practicats.png"
+    "resum_any.jpg", "km_totals.jpg", "temps_total.jpg", 
+    "desnivell.jpg", "esport_dominant.jpg", "millor_activitat.jpg",
+    "dades_socials.jpg", "energia.jpg", "esports_practicats.jpg"
   ];
   
   currentIndex = 0;
