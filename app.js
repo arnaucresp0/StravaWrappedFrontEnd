@@ -1,4 +1,4 @@
-const API = "http://localhost:8000";
+const API = "https://strava-wrapped-backend.onrender.com";
 
 const mainBtn = document.getElementById("mainBtn");
 const wrappedDiv = document.getElementById("wrapped");
