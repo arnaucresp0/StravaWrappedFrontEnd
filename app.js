@@ -72,28 +72,50 @@ async function generateWrapped() {
   
   if (token) {
     headers["x-session-token"] = token;
+    console.log("🔑 Enviant token:", token.substring(0, 20) + "...");
   }
   
-  const res = await fetch(`${API}/wrapped/image`, {
-    credentials: "include",  // Encara intentem cookies si funciona
-    headers: headers
-  });
+  try {
+    const res = await fetch(`${API}/wrapped/image`, {
+      credentials: "include",
+      headers: headers
+    });
+    
+    console.log("📡 Status:", res.status, res.statusText);
+    
+    if (!res.ok) {
+      if (res.status === 401) {
+        console.error("❌ Error 401: No autoritzat");
+        // Token potser ha expirat, elimina'l
+        localStorage.removeItem('strava_session_token');
+        alert("Sessió expirada. Si us plau, torna a intentar-ho.");
+        window.location.reload();
+        return;
+      }
+      throw new Error(`Error HTTP ${res.status}`);
+    }
+    
+    const data = await res.json();
+    console.log("✅ Dades rebudes:", data);
 
-  const data = await res.json();
-
-  // Guardem tant les imatges com els noms
-  images = data.images;
-  imageNames = data.image_names || [  // Si el backend retorna noms
-    "resum_any.jpg", "km_totals.jpg", "temps_total.jpg", 
-    "desnivell.jpg", "esport_dominant.jpg", "millor_activitat.jpg",
-    "dades_socials.jpg", "energia.jpg", "esports_practicats.jpg"
-  ];
-  
-  currentIndex = 0;
-
-  wrappedDiv.style.display = "block";
-  showImage(currentIndex);
-  mainBtn.style.display = "none";
+    images = data.images;
+    imageNames = data.image_names || [
+      "year_overall_cat.jpg", "liked_activity.jpg", "random_data_cat.jpg", 
+      "total_elevation_cat.jpg", "total_km_cat.jpg", "total_time_cat.jpg",
+      "total_pr_cat.jpg", "total_watts_cat.jpg", "multi_sport_cat.jpg"
+    ];
+    
+    currentIndex = 0;
+    wrappedDiv.style.display = "block";
+    showImage(currentIndex);
+    mainBtn.style.display = "none";
+    
+  } catch (error) {
+    console.error("❌ Error generant Wrapped:", error);
+    mainBtn.disabled = false;
+    mainBtn.innerText = "Genera el meu Wrapped";
+    alert("Hi ha hagut un error generant el teu Wrapped. Torna-ho a intentar.");
+  }
 }
 
 // Descarrega amb nom descriptiu
