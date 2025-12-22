@@ -41,6 +41,21 @@ h1 {
   text-align: center;
 }
 
+#strava-powered {
+  display: block;
+  margin: -15px auto 40px auto; /* Ajusta els marges per posicionar-la sota el títol */
+  max-width: 300px; /* Controla l'amplada màxima de la imatge */
+  width: 90%; /* La fa responsive */
+  height: auto;
+  filter: brightness(0) invert(1); /* Converteix la imatge a blanc (si el fons és fosc) */
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+#strava-powered:hover {
+  opacity: 1;
+}
+
 /* Info button */
 .info-btn {
   position: absolute;
