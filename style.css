@@ -43,7 +43,7 @@ h1 {
 
 #strava-powered {
   display: block;
-  margin: -15px auto 15 auto; /* Ajusta els marges per posicionar-la sota el títol */
+  margin: -15px auto 15px auto; /* Ajusta els marges per posicionar-la sota el títol */
   max-width: 300px; /* Controla l'amplada màxima de la imatge */
   width: 80%; /* La fa responsive */
   height: auto;
